@@ -3,8 +3,12 @@ import matplotlib.pyplot as plt
 import streamlit as st
 from datetime import datetime
 
+import matplotlib
+from matplotlib import rcParams
+
 rcParams['font.family'] = 'Arial'
 plt.rcParams['axes.unicode_minus'] = False
+
 
 
 API_KEY = "69fc5c5baeb423ac0f0d33ba2e193c21"
