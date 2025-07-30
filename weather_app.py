@@ -113,7 +113,7 @@ def five_day_forecast(city, language):
         ax.set_xlabel("")  # בלי טקסט בציר X
         ax.set_xticklabels(first_5_days, rotation=0)
 
-        ax.set_ylabel("°C", fontsize=12, rotation=180, labelpad=15)
+        ax.set_ylabel("°C", fontsize=12, rotation=90, labelpad=15)
 
         ax.grid(True)
         st.pyplot(fig)
