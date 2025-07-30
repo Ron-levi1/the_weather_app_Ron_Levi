@@ -1,20 +1,12 @@
 import requests
 import matplotlib.pyplot as plt
 import streamlit as st
-from datetime import datetime
-
-import matplotlib
-from matplotlib import rcParams
-rcParams['font.family'] = 'sans-serif'
-rcParams['font.sans-serif'] = ['Arial', 'DejaVu Sans']
-plt.rcParams['axes.unicode_minus'] = False
-
-
+import datetime
 
 API_KEY = "69fc5c5baeb423ac0f0d33ba2e193c21"
 
 weather_now_url = "http://api.openweathermap.org/data/2.5/weather"
-forecast_url = "http://api.openweathermap.org/data/2.5/forecast"
+weekly_weather_url = "https://api.openweathermap.org/data/2.5/onecall"
 
 LANGUAGES = {
     "עברית": "he",
@@ -24,13 +16,14 @@ LANGUAGES = {
 TEXTS = {
     "עברית": {
         "title": "🌦 מה מזג האוויר?",
+        "select_language": "בחר/י שפה",
         "enter_city": "🏙️ בחר/י את העיר הרצויה:",
         "show_forecast": "📈 התחזית",
         "current_weather": "מזג האוויר כעת ב",
         "temp": "🌡 טמפרטורה:",
         "humidity": "💧 לחות:",
         "description": "☁ עננות:",
-        "weekly_forecast": "📊 תחזית לחמשת הימים הקרובים ל",
+        "weekly_forecast": "📊 תחזית שבועית ל",
         "no_city": "❗ הקלד/י שם עיר כדי להציג תחזית.",
         "fetch_error": "שגיאה! יש לבדוק את הנתונים שהזנת",
         "graph_label_days": "ימים",
@@ -38,15 +31,16 @@ TEXTS = {
     },
     "English": {
         "title": "🌦 What Is The Weather?",
+        "select_language": "Select Language",
         "enter_city": "🏙️ Enter a city:",
         "show_forecast": "📈 Show Forecast",
         "current_weather": "Current weather in",
         "temp": "🌡 Temperature:",
         "humidity": "💧 Humidity:",
         "description": "☁ Cloudiness:",
-        "weekly_forecast": "📊 5-day forecast for",
+        "weekly_forecast": "📊 Weekly forecast for",
         "no_city": "❗ Please enter a city name to show forecast.",
-        "fetch_error": "❌ Could not fetch data. Check the city name.",
+        "fetch_error": "❌ Could not fetch data. Check city name or API Key.",
         "graph_label_days": "Days",
         "graph_label_temp": "Temperature (°C)"
     }
@@ -94,33 +88,29 @@ def weather_now(city, language):
         st.write(f"{text['temp']} {temp}°C")
         st.write(f"{text['humidity']} {humidity}%")
         st.write(f"{text['description']} {description}")
+        return data["coord"]["lat"], data["coord"]["lon"]
     else:
         st.error(text["fetch_error"])
+        return None, None
 
-def five_day_forecast(city, language):
-    url = f"{forecast_url}?q={city}&appid={API_KEY}&units=metric&lang={language}"
-    response = requests.get(url)
+def weekly_weather(lat, lon, city, language):
+    weekly_url = f"{weekly_weather_url}?lat={lat}&lon={lon}&appid={API_KEY}&units=metric&lang={language}&exclude=current,minutely,hourly,alerts"
+    response = requests.get(weekly_url)
     if response.status_code == 200:
-        data = response.json()
-        forecast_list = data["list"]
-
-        days = {}
-        for entry in forecast_list:
-            date = datetime.fromtimestamp(entry["dt"]).strftime("%d/%m")
-            temp = entry["main"]["temp"]
-            if date not in days:
-                days[date] = []
-            days[date].append(temp)
-
-        avg_temps = {day: sum(temps) / len(temps) for day, temps in days.items()}
-        first_5_days = list(avg_temps.keys())[:5]
-        temps_for_graph = [avg_temps[day] for day in first_5_days]
-
+        forecast_data = response.json()
+        days = []
+        temps = []
+        for i, day in enumerate(forecast_data["daily"][:5]):
+            temp_day = day["temp"]["day"]
+            temps.append(temp_day)
+            days.append(day["dt"])
+        days_labels = [datetime.datetime.fromtimestamp(d).strftime("%d/%m") for d in days]
         fig, ax = plt.subplots(figsize=(10, 5))
-        ax.plot(first_5_days, temps_for_graph, marker="o", linestyle="solid")
-        ax.set_title(f"{text['weekly_forecast']} {city}", fontsize=16)
+        ax.plot(days_labels, temps, marker="o", linestyle="solid")
+        ax.set_title(f"{text['weekly_forecast']} {city}", fontsize=16, loc='center')
         ax.set_xlabel(text["graph_label_days"], fontsize=12)
         ax.set_ylabel(text["graph_label_temp"], fontsize=12)
+        ax.tick_params(axis='x', labelrotation=45)
         ax.grid(True)
         st.pyplot(fig)
     else:
@@ -128,7 +118,8 @@ def five_day_forecast(city, language):
 
 if st.button(text["show_forecast"]):
     if city:
-        weather_now(city, language)
-        five_day_forecast(city, language)
+        lat, lon = weather_now(city, language)
+        if lat and lon:
+            weekly_weather(lat, lon, city, language)
     else:
         st.warning(text["no_city"])
