@@ -45,6 +45,24 @@ TEXTS = {
 
 st.set_page_config(layout="wide")
 
+# 🟢 CSS מותאם אישית
+st.markdown(
+    """
+    <style>
+    /* מעביר את הסיידבר לצד ימין */
+    [data-testid="stSidebar"] {
+        right: 0;
+        left: auto;
+    }
+    /* עושה אותו צר יותר */
+    section[data-testid="stSidebar"] > div:first-child {
+        width: 200px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 language_choice = st.sidebar.selectbox("🌍 עברית / English", options=list(LANGUAGES.keys()))
 language = LANGUAGES[language_choice]
 text = TEXTS[language_choice]
