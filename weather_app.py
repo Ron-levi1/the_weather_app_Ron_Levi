@@ -55,7 +55,7 @@ st.markdown(
     }
     /* עושה אותו צר יותר */
     section[data-testid="stSidebar"] > div:first-child {
-        width: 300px;
+        width: 250px;
     }
     </style>
     """,
