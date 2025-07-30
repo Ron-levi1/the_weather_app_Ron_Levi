@@ -22,7 +22,7 @@ TEXTS = {
         "temp": "🌡 טמפרטורה:",
         "humidity": "💧 לחות:",
         "description": "☁ עננות:",
-        "weekly_forecast": "📊 תחזית לחמשת הימים הקרובים ל",
+        "weekly_forecast": "📊 תחזית ל־5 הימים הקרובים ל",
         "no_city": "❗ הקלד/י שם עיר כדי להציג תחזית.",
         "fetch_error": "שגיאה! יש לבדוק את הנתונים שהזנת"
     },
@@ -104,18 +104,16 @@ def five_day_forecast(city, language):
         first_5_days = list(avg_temps.keys())[:5]
         temps_for_graph = [avg_temps[day] for day in first_5_days]
 
+        # ✅ כותרת הגרף יוצאת החוצה
+        st.subheader(f"{text['weekly_forecast']} {city}")
+
         fig, ax = plt.subplots(figsize=(10, 5))
         ax.plot(first_5_days, temps_for_graph, marker="o", linestyle="solid")
 
-
-        ax.set_title(f"{text['weekly_forecast']} {city}", fontsize=16)
-
-
-        ax.set_xlabel("")
+        ax.set_xlabel("")  # בלי טקסט בציר X
         ax.set_xticklabels(first_5_days, rotation=0)
 
-
-        ax.set_ylabel("°C", fontsize=12)
+        ax.set_ylabel("°C", fontsize=12, rotation=270, labelpad=15)
 
         ax.grid(True)
         st.pyplot(fig)
