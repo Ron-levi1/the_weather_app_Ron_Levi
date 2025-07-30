@@ -24,7 +24,8 @@ TEXTS = {
         "description": "☁ עננות:",
         "weekly_forecast": "📊 תחזית ל־5 הימים הקרובים ל",
         "no_city": "❗ הקלד/י שם עיר כדי להציג תחזית.",
-        "fetch_error": "שגיאה! יש לבדוק את הנתונים שהזנת"
+        "fetch_error": "שגיאה! יש לבדוק את הנתונים שהזנת",
+        "graph_label_temp": "טמפרטורה (°C)"
     },
     "English": {
         "title": "🌦 What Is The Weather?",
@@ -36,7 +37,8 @@ TEXTS = {
         "description": "☁ Cloudiness:",
         "weekly_forecast": "📊 5-day forecast for",
         "no_city": "❗ Please enter a city name to show forecast.",
-        "fetch_error": "❌ Could not fetch data. Check the city name."
+        "fetch_error": "❌ Could not fetch data. Check the city name.",
+        "graph_label_temp": "Temperature (°C)"
     }
 }
 
@@ -91,7 +93,6 @@ def five_day_forecast(city, language):
     if response.status_code == 200:
         data = response.json()
         forecast_list = data["list"]
-
         days = {}
         for entry in forecast_list:
             date = datetime.fromtimestamp(entry["dt"]).strftime("%d/%m")
@@ -99,22 +100,23 @@ def five_day_forecast(city, language):
             if date not in days:
                 days[date] = []
             days[date].append(temp)
-
         avg_temps = {day: sum(temps) / len(temps) for day, temps in days.items()}
         first_5_days = list(avg_temps.keys())[:5]
         temps_for_graph = [avg_temps[day] for day in first_5_days]
-
-        # ✅ כותרת הגרף יוצאת החוצה
         st.subheader(f"{text['weekly_forecast']} {city}")
-
         fig, ax = plt.subplots(figsize=(10, 5))
         ax.plot(first_5_days, temps_for_graph, marker="o", linestyle="solid")
-
-        ax.set_xlabel("")  # בלי טקסט בציר X
+        ax.set_xlabel("")
         ax.set_xticklabels(first_5_days, rotation=0)
-
-        ax.set_ylabel("°C", fontsize=12, rotation=0, labelpad=15)
-
+        min_temp = int(min(temps_for_graph)) - 2
+        max_temp = int(max(temps_for_graph)) + 2
+        y_ticks = list(range((min_temp // 5) * 5, (max_temp // 5 + 1) * 5, 5))
+        ax.set_yticks(y_ticks)
+        ax.set_ylabel("°C", fontsize=12, rotation=270, labelpad=15)
+        for i, temp in enumerate(temps_for_graph):
+            ax.text(first_5_days[i], temp + 0.3, f"{temp:.1f}°C",
+                    ha='center', va='bottom', fontsize=10, color='black',
+                    bbox=dict(facecolor='white', edgecolor='black', boxstyle='round,pad=0.3'))
         ax.grid(True)
         st.pyplot(fig)
     else:
