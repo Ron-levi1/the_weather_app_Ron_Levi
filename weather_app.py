@@ -24,9 +24,7 @@ TEXTS = {
         "description": "☁ עננות:",
         "weekly_forecast": "📊 תחזית לחמשת הימים הקרובים ל",
         "no_city": "❗ הקלד/י שם עיר כדי להציג תחזית.",
-        "fetch_error": "שגיאה! יש לבדוק את הנתונים שהזנת",
-        "graph_label_days": "ימים",
-        "graph_label_temp": "טמפרטורה (°C)"
+        "fetch_error": "שגיאה! יש לבדוק את הנתונים שהזנת"
     },
     "English": {
         "title": "🌦 What Is The Weather?",
@@ -38,9 +36,7 @@ TEXTS = {
         "description": "☁ Cloudiness:",
         "weekly_forecast": "📊 5-day forecast for",
         "no_city": "❗ Please enter a city name to show forecast.",
-        "fetch_error": "❌ Could not fetch data. Check the city name.",
-        "graph_label_days": "Days",
-        "graph_label_temp": "Temperature (°C)"
+        "fetch_error": "❌ Could not fetch data. Check the city name."
     }
 }
 
@@ -105,14 +101,22 @@ def five_day_forecast(city, language):
             days[date].append(temp)
 
         avg_temps = {day: sum(temps) / len(temps) for day, temps in days.items()}
-        first_5_days = list(avg_temps.keys())[:7]
-        temps_for_graph = [avg_temps[day] for day in first_7_days]
+        first_5_days = list(avg_temps.keys())[:5]
+        temps_for_graph = [avg_temps[day] for day in first_5_days]
 
         fig, ax = plt.subplots(figsize=(10, 5))
         ax.plot(first_5_days, temps_for_graph, marker="o", linestyle="solid")
+
+        # ✅ בכותרת נשאר כמו שהוא
         ax.set_title(f"{text['weekly_forecast']} {city}", fontsize=16)
-        ax.set_xlabel(text["graph_label_days"], fontsize=12)
-        ax.set_ylabel(text["graph_label_temp"], fontsize=12)
+
+        # ✅ בציר X רק תאריכים (בלי טקסט אחר)
+        ax.set_xlabel("")
+        ax.set_xticklabels(first_5_days, rotation=0)
+
+        # ✅ בציר Y רק מעלות
+        ax.set_ylabel("°C", fontsize=12)
+
         ax.grid(True)
         st.pyplot(fig)
     else:
