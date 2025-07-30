@@ -88,23 +88,17 @@ def weather_now(city, language):
         st.error(text["fetch_error"])
         return None, None
 
-
 def weekly_weather(lat, lon, city, language):
-    if lat is None or lon is None:
-        st.error(text["fetch_error"])
-        return
-    url = f"{onecall_url}?lat={lat}&lon={lon}&appid={API_KEY}&units=metric&lang={language}&exclude=current,minutely,hourly,alerts"
-    response = requests.get(url)
+    weekly_url = f"{weekly_weather_url}?lat={lat}&lon={lon}&appid={API_KEY}&units=metric&lang={language}&exclude=current,minutely,hourly,alerts"
+    response = requests.get(weekly_url)
     if response.status_code == 200:
-        data = response.json()
-        if "daily" not in data:
-            st.error(text["fetch_error"])
-            return
-        daily_data = data["daily"][:7]
-
-        days = [datetime.datetime.fromtimestamp(day["dt"]).strftime("%d/%m") for day in daily_data]
-        temps = [day["temp"]["day"] for day in daily_data]
-
+        forecast_data = response.json()
+        days = []
+        temps = []
+        for i, day in enumerate(forecast_data["daily"][:5]):
+            temp_day = day["temp"]["day"]
+            temps.append(temp_day)
+            days.append(datetime.datetime.fromtimestamp(day["dt"]).strftime("%d/%m"))
         st.subheader(f"{text['weekly_forecast']} {city}")
         fig, ax = plt.subplots(figsize=(10, 5))
         ax.plot(days, temps, marker="o", linestyle="solid")
@@ -115,7 +109,6 @@ def weekly_weather(lat, lon, city, language):
         st.pyplot(fig)
     else:
         st.error(text["fetch_error"])
-
 
 if st.button(text["show_forecast"]):
     if city:
