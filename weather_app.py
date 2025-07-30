@@ -108,10 +108,8 @@ def five_day_forecast(city, language):
         ax.plot(first_5_days, temps_for_graph, marker="o", linestyle="solid")
         ax.set_xlabel("")
         ax.set_xticklabels(first_5_days, rotation=0)
-        min_temp = int(min(temps_for_graph)) - 2
-        max_temp = int(max(temps_for_graph)) + 2
-        y_ticks = list(range((min_temp // 5) * 5, (max_temp // 5 + 1) * 5, 5))
-        ax.set_yticks(y_ticks)
+        ax.set_ylim(20, 40)
+        ax.set_yticks(range(20, 41, 5))
         ax.set_ylabel("°C", fontsize=12, rotation=270, labelpad=15)
         for i, temp in enumerate(temps_for_graph):
             ax.text(first_5_days[i], temp + 0.3, f"{temp:.1f}°C",
