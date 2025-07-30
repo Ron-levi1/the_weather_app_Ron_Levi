@@ -107,14 +107,14 @@ def five_day_forecast(city, language):
         fig, ax = plt.subplots(figsize=(10, 5))
         ax.plot(first_5_days, temps_for_graph, marker="o", linestyle="solid")
 
-        # ✅ בכותרת נשאר כמו שהוא
+
         ax.set_title(f"{text['weekly_forecast']} {city}", fontsize=16)
 
-        # ✅ בציר X רק תאריכים (בלי טקסט אחר)
+
         ax.set_xlabel("")
         ax.set_xticklabels(first_5_days, rotation=0)
 
-        # ✅ בציר Y רק מעלות
+
         ax.set_ylabel("°C", fontsize=12)
 
         ax.grid(True)
