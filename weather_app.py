@@ -5,8 +5,8 @@ from datetime import datetime
 
 import matplotlib
 from matplotlib import rcParams
-
-rcParams['font.family'] = 'Arial'
+rcParams['font.family'] = 'sans-serif'
+rcParams['font.sans-serif'] = ['Arial', 'DejaVu Sans']
 plt.rcParams['axes.unicode_minus'] = False
 
 
