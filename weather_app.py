@@ -9,61 +9,43 @@ weekly_weather_url = "https://api.openweathermap.org/data/2.5/onecall"
 
 LANGUAGES = {
     "עברית": "he",
-    "English": "en",
-    "العربية": "ar"
+    "English": "en"
 }
 
 TEXTS = {
     "עברית": {
-        "title": "🌦 אפליקציית מזג האוויר",
-        "select_language": "🌍 בחר/י שפה:",
-        "enter_city": "🏙️ הקלידו שם עיר:",
-        "show_forecast": "📈 הצג תחזית",
+        "title": "🌦 מה מזג האוויר?",
+        "select_language": "בחר/י שפה",
+        "enter_city": "🏙️ בחר/י את העיר הרצויה:",
+        "show_forecast": "📈 התחזית",
         "current_weather": "מזג האוויר כעת ב",
         "temp": "🌡 טמפרטורה:",
         "humidity": "💧 לחות:",
-        "description": "☁ מצב השמיים:",
         "weekly_forecast": "📊 תחזית שבועית ל",
         "no_city": "❗ הקלד/י שם עיר כדי להציג תחזית.",
-        "fetch_error": "❌ לא הצלחתי להביא נתונים. בדקי את שם העיר או את ה-API Key.",
+        "fetch_error": "שגיאה! יש לבדוק את הנתונים שהזנת",
         "graph_label_days": "ימים",
         "graph_label_temp": "טמפרטורה (°C)"
     },
     "English": {
-        "title": "🌦 Weather App",
-        "select_language": "🌍 Select a language:",
-        "enter_city": "🏙️ Enter a city name:",
+        "title": "🌦 What Is The Weather?",
+        "select_language": "Language",
+        "enter_city": "🏙️ Enter a city:",
         "show_forecast": "📈 Show Forecast",
         "current_weather": "Current weather in",
         "temp": "🌡 Temperature:",
         "humidity": "💧 Humidity:",
-        "description": "☁ Sky condition:",
         "weekly_forecast": "📊 Weekly forecast for",
         "no_city": "❗ Please enter a city name to show forecast.",
         "fetch_error": "❌ Could not fetch data. Check city name or API Key.",
         "graph_label_days": "Days",
         "graph_label_temp": "Temperature (°C)"
-    },
-    "العربية": {
-        "title": "🌦 تطبيق الطقس",
-        "select_language": "🌍 اختر اللغة:",
-        "enter_city": "🏙️ أدخل اسم المدينة:",
-        "show_forecast": "📈 عرض التوقعات",
-        "current_weather": "الطقس الحالي في",
-        "temp": "🌡 درجة الحرارة:",
-        "humidity": "💧 الرطوبة:",
-        "description": "☁ حالة السماء:",
-        "weekly_forecast": "📊 التوقعات الأسبوعية لـ",
-        "no_city": "❗ أدخل اسم مدينة لعرض التوقعات.",
-        "fetch_error": "❌ لم أتمكن من جلب البيانات. تحقق من اسم المدينة أو مفتاح API.",
-        "graph_label_days": "أيام",
-        "graph_label_temp": "درجة الحرارة (°C)"
     }
 }
 
 st.set_page_config(layout="wide")
 
-language_choice = st.sidebar.selectbox("🌍 בחר/ي שפה / Select language", options=list(LANGUAGES.keys()))
+language_choice = st.sidebar.selectbox("🌍 עברית / English", options=list(LANGUAGES.keys()))
 language = LANGUAGES[language_choice]
 text = TEXTS[language_choice]
 
@@ -82,7 +64,7 @@ def weather_now(city, language):
         st.subheader(f"{text['current_weather']} {city_name}:")
         st.write(f"{text['temp']} {temp}°C")
         st.write(f"{text['humidity']} {humidity}%")
-        st.write(f"{text['description']} {description}")
+        st.write(f"{description}")
         return data["coord"]["lat"], data["coord"]["lon"]
     else:
         st.error(text["fetch_error"])
