@@ -45,18 +45,17 @@ TEXTS = {
 
 st.set_page_config(layout="wide")
 
-# 🟢 CSS מותאם אישית
 st.markdown(
     """
     <style>
     /* מעביר את הסיידבר לצד ימין */
     [data-testid="stSidebar"] {
-        right: 0;
-        left: auto;
+        right: auto;
+        left: 0;
     }
     /* עושה אותו צר יותר */
     section[data-testid="stSidebar"] > div:first-child {
-        width: 200px;
+        width: 300px;
     }
     </style>
     """,
