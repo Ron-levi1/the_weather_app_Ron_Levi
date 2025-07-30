@@ -21,6 +21,7 @@ TEXTS = {
         "current_weather": "מזג האוויר כעת ב",
         "temp": "🌡 טמפרטורה:",
         "humidity": "💧 לחות:",
+        "description": "☁ מצב השמיים:",
         "weekly_forecast": "📊 תחזית שבועית ל",
         "no_city": "❗ הקלד/י שם עיר כדי להציג תחזית.",
         "fetch_error": "שגיאה! יש לבדוק את הנתונים שהזנת",
@@ -29,12 +30,13 @@ TEXTS = {
     },
     "English": {
         "title": "🌦 What Is The Weather?",
-        "select_language": "Language",
+        "select_language": "Select Language",
         "enter_city": "🏙️ Enter a city:",
         "show_forecast": "📈 Show Forecast",
         "current_weather": "Current weather in",
         "temp": "🌡 Temperature:",
         "humidity": "💧 Humidity:",
+        "description": "☁ Sky Condition:",
         "weekly_forecast": "📊 Weekly forecast for",
         "no_city": "❗ Please enter a city name to show forecast.",
         "fetch_error": "❌ Could not fetch data. Check city name or API Key.",
@@ -48,23 +50,26 @@ st.set_page_config(layout="wide")
 st.markdown(
     """
     <style>
-    /* מעביר את הסיידבר לצד ימין */
     [data-testid="stSidebar"] {
-        right: auto;
-        left: 0;
+        right: 0;
+        left: auto;
     }
-    /* עושה אותו צר יותר */
     section[data-testid="stSidebar"] > div:first-child {
-        width: 250px;
+        width: 200px;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-language_choice = st.sidebar.selectbox("🌍 עברית / English", options=list(LANGUAGES.keys()))
+language_choice = st.sidebar.radio("🌍 עברית / English", options=list(LANGUAGES.keys()))
 language = LANGUAGES[language_choice]
 text = TEXTS[language_choice]
+
+if language_choice == "עברית":
+    st.markdown("<style>body {direction: rtl; text-align: right;}</style>", unsafe_allow_html=True)
+else:
+    st.markdown("<style>body {direction: ltr; text-align: left;}</style>", unsafe_allow_html=True)
 
 st.title(text["title"])
 city = st.text_input(text["enter_city"])
@@ -81,7 +86,7 @@ def weather_now(city, language):
         st.subheader(f"{text['current_weather']} {city_name}:")
         st.write(f"{text['temp']} {temp}°C")
         st.write(f"{text['humidity']} {humidity}%")
-        st.write(f"{description}")
+        st.write(f"{text['description']} {description}")
         return data["coord"]["lat"], data["coord"]["lon"]
     else:
         st.error(text["fetch_error"])
