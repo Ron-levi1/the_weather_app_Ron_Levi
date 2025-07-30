@@ -22,7 +22,7 @@ TEXTS = {
         "temp": "🌡 טמפרטורה:",
         "humidity": "💧 לחות:",
         "description": "☁ עננות:",
-        "weekly_forecast": "📊 תחזית ל-5 ימים הקרובים עבור",
+        "weekly_forecast": "📊 תחזית ל-7 ימים הקרובים עבור",
         "no_city": "❗ הקלד/י שם עיר כדי להציג תחזית.",
         "fetch_error": "שגיאה! יש לבדוק את הנתונים שהוזנו"
     },
@@ -34,7 +34,7 @@ TEXTS = {
         "temp": "🌡 Temperature:",
         "humidity": "💧 Humidity:",
         "description": "☁ Cloudiness:",
-        "weekly_forecast": "📊 5-Day Forecast for",
+        "weekly_forecast": "📊 7-Day Forecast for",
         "no_city": "❗ Please enter a city name to show forecast.",
         "fetch_error": "❌ Could not fetch data. Check city name or API Key."
     }
@@ -94,7 +94,7 @@ def weekly_weather(lat, lon, city, language):
         forecast_data = response.json()
         days = []
         temps = []
-        for i, day in enumerate(forecast_data["daily"][:5]):
+        for i, day in enumerate(forecast_data["daily"][:7]):  # עכשיו 7 ימים
             temp_day = day["temp"]["day"]
             temps.append(temp_day)
             days.append(datetime.datetime.fromtimestamp(day["dt"]).strftime("%d/%m"))
