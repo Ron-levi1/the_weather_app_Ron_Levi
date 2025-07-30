@@ -26,7 +26,7 @@ TEXTS = {
         "no_city": "❗ הקלד/י שם עיר כדי להציג תחזית.",
         "fetch_error": "שגיאה! יש לבדוק את הנתונים שהזנת",
         "graph_label_temp": "טמפרטורה (°C)",
-        "graph_label_days": "תאריך"
+        "graph_label_days": "ךיראת"
     },
     "English": {
         "title": "🌦 What Is The Weather?",
@@ -112,7 +112,7 @@ def five_day_forecast(city, language):
         ax.set_xticklabels(first_5_days, rotation=0)
         ax.set_ylim(20, 40)
         ax.set_yticks(range(20, 41, 5))
-        ax.set_ylabel("°C", fontsize=12, rotation=270, labelpad=15)
+        ax.set_ylabel("°C", fontsize=12, rotation=0, labelpad=15)
         for i, temp in enumerate(temps_for_graph):
             ax.text(first_5_days[i], temp + 0.3, f"{temp:.1f}°C",
                     ha='center', va='bottom', fontsize=10, color='black',
