@@ -1,12 +1,11 @@
 import requests
 import matplotlib.pyplot as plt
 import streamlit as st
-import datetime
 
 API_KEY = "69fc5c5baeb423ac0f0d33ba2e193c21"
 
 weather_now_url = "http://api.openweathermap.org/data/2.5/weather"
-onecall_url = "https://api.openweathermap.org/data/2.5/onecall"
+weekly_weather_url = "https://api.openweathermap.org/data/2.5/onecall"
 
 LANGUAGES = {
     "עברית": "he",
@@ -16,27 +15,33 @@ LANGUAGES = {
 TEXTS = {
     "עברית": {
         "title": "🌦 מה מזג האוויר?",
+        "select_language": "בחר/י שפה",
         "enter_city": "🏙️ בחר/י את העיר הרצויה:",
-        "show_forecast": "📈 הצג תחזית",
+        "show_forecast": "📈 התחזית",
         "current_weather": "מזג האוויר כעת ב",
         "temp": "🌡 טמפרטורה:",
         "humidity": "💧 לחות:",
         "description": "☁ עננות:",
-        "weekly_forecast": "📊 תחזית ל-7 ימים הקרובים עבור",
+        "weekly_forecast": "📊 תחזית שבועית ל",
         "no_city": "❗ הקלד/י שם עיר כדי להציג תחזית.",
-        "fetch_error": "שגיאה! יש לבדוק את הנתונים שהוזנו"
+        "fetch_error": "שגיאה! יש לבדוק את הנתונים שהזנת",
+        "graph_label_days": "ימים",
+        "graph_label_temp": "טמפרטורה (°C)"
     },
     "English": {
         "title": "🌦 What Is The Weather?",
+        "select_language": "Select Language",
         "enter_city": "🏙️ Enter a city:",
         "show_forecast": "📈 Show Forecast",
         "current_weather": "Current weather in",
         "temp": "🌡 Temperature:",
         "humidity": "💧 Humidity:",
-        "description": "☁ Cloudiness:",
-        "weekly_forecast": "📊 7-Day Forecast for",
+        "description": "☁ cloudiness:",
+        "weekly_forecast": "📊 Weekly forecast for",
         "no_city": "❗ Please enter a city name to show forecast.",
-        "fetch_error": "❌ Could not fetch data. Check city name or API Key."
+        "fetch_error": "❌ Could not fetch data. Check city name or API Key.",
+        "graph_label_days": "Days",
+        "graph_label_temp": "Temperature (°C)"
     }
 }
 
@@ -69,7 +74,6 @@ else:
 st.title(text["title"])
 city = st.text_input(text["enter_city"])
 
-
 def weather_now(city, language):
     now_url = f"{weather_now_url}?q={city}&appid={API_KEY}&units=metric&lang={language}"
     response = requests.get(now_url)
@@ -95,16 +99,15 @@ def weekly_weather(lat, lon, city, language):
         forecast_data = response.json()
         days = []
         temps = []
-        for i, day in enumerate(forecast_data["daily"][:5]):
+        for i, day in enumerate(forecast_data["daily"][:7]):
             temp_day = day["temp"]["day"]
             temps.append(temp_day)
-            days.append(datetime.datetime.fromtimestamp(day["dt"]).strftime("%d/%m"))
-        st.subheader(f"{text['weekly_forecast']} {city}")
+            days.append(f"{text['graph_label_days']} {i+1}")
         fig, ax = plt.subplots(figsize=(10, 5))
         ax.plot(days, temps, marker="o", linestyle="solid")
-        ax.set_xlabel("")
-        ax.set_ylabel("°C", fontsize=12)
-        ax.tick_params(axis='x', labelrotation=45)
+        ax.set_title(f"{text['weekly_forecast']} {city}", fontsize=16)
+        ax.set_xlabel(text["graph_label_days"], fontsize=12)
+        ax.set_ylabel(text["graph_label_temp"], fontsize=12)
         ax.grid(True)
         st.pyplot(fig)
     else:
