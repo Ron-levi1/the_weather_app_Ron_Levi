@@ -25,7 +25,8 @@ TEXTS = {
         "weekly_forecast": "📊 תחזית ל־5 הימים הקרובים ל",
         "no_city": "❗ הקלד/י שם עיר כדי להציג תחזית.",
         "fetch_error": "שגיאה! יש לבדוק את הנתונים שהזנת",
-        "graph_label_temp": "טמפרטורה (°C)"
+        "graph_label_temp": "טמפרטורה (°C)",
+        "graph_label_days": "תאריך"
     },
     "English": {
         "title": "🌦 What Is The Weather?",
@@ -38,7 +39,8 @@ TEXTS = {
         "weekly_forecast": "📊 5-day forecast for",
         "no_city": "❗ Please enter a city name to show forecast.",
         "fetch_error": "❌ Could not fetch data. Check the city name.",
-        "graph_label_temp": "Temperature (°C)"
+        "graph_label_temp": "Temperature (°C)",
+        "graph_label_days": "Date"
     }
 }
 
@@ -106,11 +108,11 @@ def five_day_forecast(city, language):
         st.subheader(f"{text['weekly_forecast']} {city}")
         fig, ax = plt.subplots(figsize=(10, 5))
         ax.plot(first_5_days, temps_for_graph, marker="o", linestyle="solid")
-        ax.set_xlabel("")
+        ax.set_xlabel(text["graph_label_days"], fontsize=12)
         ax.set_xticklabels(first_5_days, rotation=0)
         ax.set_ylim(20, 40)
         ax.set_yticks(range(20, 41, 5))
-        ax.set_ylabel("°C", fontsize=12, rotation=0, labelpad=15)
+        ax.set_ylabel("°C", fontsize=12, rotation=270, labelpad=15)
         for i, temp in enumerate(temps_for_graph):
             ax.text(first_5_days[i], temp + 0.3, f"{temp:.1f}°C",
                     ha='center', va='bottom', fontsize=10, color='black',
