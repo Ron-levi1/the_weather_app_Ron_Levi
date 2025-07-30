@@ -6,7 +6,7 @@ import datetime
 API_KEY = "69fc5c5baeb423ac0f0d33ba2e193c21"
 
 weather_now_url = "http://api.openweathermap.org/data/2.5/weather"
-weekly_weather_url = "https://api.openweathermap.org/data/2.5/onecall"
+onecall_url = "https://api.openweathermap.org/data/2.5/onecall"
 
 LANGUAGES = {
     "עברית": "he",
@@ -69,6 +69,7 @@ else:
 st.title(text["title"])
 city = st.text_input(text["enter_city"])
 
+
 def weather_now(city, language):
     now_url = f"{weather_now_url}?q={city}&appid={API_KEY}&units=metric&lang={language}"
     response = requests.get(now_url)
@@ -87,17 +88,23 @@ def weather_now(city, language):
         st.error(text["fetch_error"])
         return None, None
 
+
 def weekly_weather(lat, lon, city, language):
-    weekly_url = f"{weekly_weather_url}?lat={lat}&lon={lon}&appid={API_KEY}&units=metric&lang={language}&exclude=current,minutely,hourly,alerts"
-    response = requests.get(weekly_url)
+    if lat is None or lon is None:
+        st.error(text["fetch_error"])
+        return
+    url = f"{onecall_url}?lat={lat}&lon={lon}&appid={API_KEY}&units=metric&lang={language}&exclude=current,minutely,hourly,alerts"
+    response = requests.get(url)
     if response.status_code == 200:
-        forecast_data = response.json()
-        days = []
-        temps = []
-        for i, day in enumerate(forecast_data["daily"][:7]):  # עכשיו 7 ימים
-            temp_day = day["temp"]["day"]
-            temps.append(temp_day)
-            days.append(datetime.datetime.fromtimestamp(day["dt"]).strftime("%d/%m"))
+        data = response.json()
+        if "daily" not in data:
+            st.error(text["fetch_error"])
+            return
+        daily_data = data["daily"][:7]
+
+        days = [datetime.datetime.fromtimestamp(day["dt"]).strftime("%d/%m") for day in daily_data]
+        temps = [day["temp"]["day"] for day in daily_data]
+
         st.subheader(f"{text['weekly_forecast']} {city}")
         fig, ax = plt.subplots(figsize=(10, 5))
         ax.plot(days, temps, marker="o", linestyle="solid")
@@ -108,6 +115,7 @@ def weekly_weather(lat, lon, city, language):
         st.pyplot(fig)
     else:
         st.error(text["fetch_error"])
+
 
 if st.button(text["show_forecast"]):
     if city:
