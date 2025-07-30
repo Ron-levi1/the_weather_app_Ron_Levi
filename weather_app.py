@@ -5,9 +5,7 @@ from datetime import datetime
 
 import matplotlib
 from matplotlib import rcParams
-rcParams['font.family'] = 'sans-serif'
-rcParams['font.sans-serif'] = ['Arial', 'DejaVu Sans']
-plt.rcParams['axes.unicode_minus'] = False
+
 
 
 
@@ -74,7 +72,7 @@ language = LANGUAGES[language_choice]
 text = TEXTS[language_choice]
 
 if language_choice == "עברית":
-    st.markdown("<style>body {direction: rtl; text-align: right;}</style>", unsafe_allow_html=True)
+    st.markdown("<style>body {direction: rtl; text-align: center;}</style>", unsafe_allow_html=True)
 else:
     st.markdown("<style>body {direction: ltr; text-align: left;}</style>", unsafe_allow_html=True)
 
