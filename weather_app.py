@@ -105,8 +105,8 @@ def five_day_forecast(city, language):
             days[date].append(temp)
 
         avg_temps = {day: sum(temps) / len(temps) for day, temps in days.items()}
-        first_5_days = list(avg_temps.keys())[:5]
-        temps_for_graph = [avg_temps[day] for day in first_5_days]
+        first_5_days = list(avg_temps.keys())[:7]
+        temps_for_graph = [avg_temps[day] for day in first_7_days]
 
         fig, ax = plt.subplots(figsize=(10, 5))
         ax.plot(first_5_days, temps_for_graph, marker="o", linestyle="solid")
