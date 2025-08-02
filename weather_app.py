@@ -26,7 +26,7 @@ TEXTS = {
         "description": "☁ עננות:",
         "weekly_forecast": "📊 תחזית ל־5 הימים הקרובים ל",
         "no_city": "❗ הקלד/י שם עיר כדי להציג תחזית.",
-        "fetch_error": "שגיאה! יש לבדוק את שם העיר",
+        "fetch_error": "שגיאה! יש לבדוק את שם העיר שהזנת",
         "graph_label_temp": "טמפרטורה (°C)",
         "graph_label_days": "תאריך"
     },
