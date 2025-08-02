@@ -1,3 +1,5 @@
 streamlit
-requests
 matplotlib
+requests
+arabic-reshaper
+python-bidi
