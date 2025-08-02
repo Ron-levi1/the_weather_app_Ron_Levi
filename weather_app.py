@@ -18,15 +18,15 @@ LANGUAGES = {
 TEXTS = {
     "עברית": {
         "title": "🌦 מה מזג האוויר?",
-        "enter_city": "🏙️ בחר/י את העיר הרצויה:",
+        "enter_city": "אנא בחר/י את העיר הרצויה:",
         "show_forecast": "📈 התחזית",
         "current_weather": "מזג האוויר כעת ב",
-        "temp": "🌡 טמפרטורה:",
-        "humidity": "💧 לחות:",
+        "temp": "🌡 הטמפרטורה:",
+        "humidity": "% הלחות:",
         "description": "☁ עננות:",
         "weekly_forecast": "📊 תחזית ל־5 הימים הקרובים ל",
         "no_city": "❗ הקלד/י שם עיר כדי להציג תחזית.",
-        "fetch_error": "שגיאה! יש לבדוק את הנתונים שהזנת",
+        "fetch_error": "שגיאה! יש לבדוק את שם העיר",
         "graph_label_temp": "טמפרטורה (°C)",
         "graph_label_days": "תאריך"
     },
@@ -36,11 +36,11 @@ TEXTS = {
         "show_forecast": "📈 Show Forecast",
         "current_weather": "Current weather in",
         "temp": "🌡 Temperature:",
-        "humidity": "💧 Humidity:",
+        "humidity": "% Humidity:",
         "description": "☁ Cloudiness:",
         "weekly_forecast": "📊 5-day forecast for",
         "no_city": "❗ Please enter a city name to show forecast.",
-        "fetch_error": "❌ Could not fetch data. Check the city name.",
+        "fetch_error": "Error! please check the city name.",
         "graph_label_temp": "Temperature (°C)",
         "graph_label_days": "Date"
     }
