@@ -2,6 +2,8 @@ import requests
 import matplotlib.pyplot as plt
 import streamlit as st
 from datetime import datetime
+import arabic_reshaper
+from bidi.algorithm import get_display
 
 API_KEY = "69fc5c5baeb423ac0f0d33ba2e193c21"
 
@@ -26,7 +28,7 @@ TEXTS = {
         "no_city": "❗ הקלד/י שם עיר כדי להציג תחזית.",
         "fetch_error": "שגיאה! יש לבדוק את הנתונים שהזנת",
         "graph_label_temp": "טמפרטורה (°C)",
-        "graph_label_days": "ךיראת"
+        "graph_label_days": "תאריך"
     },
     "English": {
         "title": "🌦 What Is The Weather?",
@@ -108,11 +110,14 @@ def five_day_forecast(city, language):
         st.subheader(f"{text['weekly_forecast']} {city}")
         fig, ax = plt.subplots(figsize=(10, 5))
         ax.plot(first_5_days, temps_for_graph, marker="o", linestyle="solid")
-        ax.set_xlabel(text["graph_label_days"], fontsize=12)
+        label_x = text["graph_label_days"]
+        if language_choice == "עברית":
+            label_x = get_display(arabic_reshaper.reshape(label_x))
+        ax.set_xlabel(label_x, fontsize=12)
         ax.set_xticklabels(first_5_days, rotation=0)
         ax.set_ylim(20, 40)
         ax.set_yticks(range(20, 41, 5))
-        ax.set_ylabel("C°", fontsize=12, rotation=0, labelpad=15)
+        ax.set_ylabel("°C", fontsize=12, rotation=0, labelpad=15)
         for i, temp in enumerate(temps_for_graph):
             ax.text(first_5_days[i], temp + 0.3, f"{temp:.1f}°C",
                     ha='center', va='bottom', fontsize=10, color='black',
