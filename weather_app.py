@@ -32,7 +32,7 @@ TEXTS = {
     },
     "English": {
         "title": "🌦 What Is The Weather?",
-        "enter_city": "🏙️ Enter a city:",
+        "enter_city": "please enter a city:",
         "show_forecast": "📈 Show Forecast",
         "current_weather": "Current weather in",
         "temp": "🌡 Temperature:",
