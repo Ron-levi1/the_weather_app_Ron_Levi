@@ -4,8 +4,9 @@ import streamlit as st
 from datetime import datetime
 import arabic_reshaper
 from bidi.algorithm import get_display
+from config import API_KEY ## for keeping my API key private
 
-API_KEY = "69fc5c5baeb423ac0f0d33ba2e193c21"
+
 
 weather_now_url = "http://api.openweathermap.org/data/2.5/weather"
 forecast_url = "http://api.openweathermap.org/data/2.5/forecast"
