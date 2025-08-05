@@ -1,4 +1,4 @@
-#The Weather App
+## The Weather App
 
 The Weather App is a Weather Checker App, built with Streamlit. The app fetches and displays real-time weather data for any city you choose using the OpenWeather API. The app supports English and Hebrew. 
 
