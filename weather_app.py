@@ -1,3 +1,4 @@
+# ייבוא מתוך הספריות הרצויות
 import requests
 import matplotlib.pyplot as plt
 import streamlit as st
@@ -11,6 +12,7 @@ from config import API_KEY ## for keeping my API key private
 weather_now_url = "http://api.openweathermap.org/data/2.5/weather"
 forecast_url = "http://api.openweathermap.org/data/2.5/forecast"
 
+# הגדרת השפות של האפליקציה (עברית ואנגלית) -
 LANGUAGES = {
     "עברית": "he",
     "English": "en"
@@ -47,6 +49,7 @@ TEXTS = {
     }
 }
 
+
 st.set_page_config(layout="wide")
 
 st.markdown(
@@ -64,6 +67,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# כפתור בחירת השפה, אם השפה הנבחרת היא עברית, מופעת RTL
 language_choice = st.sidebar.radio("🌍 עברית / English", options=list(LANGUAGES.keys()))
 language = LANGUAGES[language_choice]
 text = TEXTS[language_choice]
@@ -75,6 +79,8 @@ else:
 
 st.title(text["title"])
 city = st.text_input(text["enter_city"])
+
+# הגדרת הפונקציה להצגת מאפייני מזג האוויר שנבחרו (בעברית או באנגלית)
 
 def weather_now(city, language):
     now_url = f"{weather_now_url}?q={city}&appid={API_KEY}&units=metric&lang={language}"
@@ -91,6 +97,8 @@ def weather_now(city, language):
         st.write(f"{text['description']} {description}")
     else:
         st.error(text["fetch_error"])
+
+        # הפונקציה שמציגה בגרף את התחתזית לחמשת הימים הקרובים
 
 def five_day_forecast(city, language):
     url = f"{forecast_url}?q={city}&appid={API_KEY}&units=metric&lang={language}"
