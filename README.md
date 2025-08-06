@@ -2,10 +2,10 @@
 
 The Weather App is a Weather Checker App, built with Streamlit. The app fetches and displays real-time weather data for any city you choose using the OpenWeather API. The app supports English and Hebrew. 
 
-##Features
+## Features
 the app displays current temperature, humidity, and cloudiness for any city. In addition, it shows a 5-day weather forecast.
 
-##Installation
+## Installation
 you need to clone this repository to your local machine. then 
 Navigate to the project folder and install the required dependencies:
 pip install -r requirements.txt
